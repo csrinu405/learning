@@ -39,6 +39,9 @@ jobs:
       run: |
         gcloud compute scp dev/k8s.yaml minikube-vm:~/k8s.yaml --zone=us-central1-a
         gcloud compute ssh minikube-vm --zone=us-central1-a --command "
+          sudo mkdir -p /tmp/minikube-locks
+          sudo chmod -R 777 /tmp/minikube-locks
+          minikube start --driver=docker
           minikube kubectl -- apply -f ~/k8s.yaml
         "
 
