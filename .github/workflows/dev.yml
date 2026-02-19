@@ -37,7 +37,7 @@ jobs:
 
     - name: Deploy to Minikube VM
       run: |
-        gcloud compute scp k8s.yaml minikube-vm:~/ --zone=us-central1-a
+        gcloud compute scp dev/k8s.yaml minikube-vm:~/ --zone=us-central1-a
         gcloud compute ssh minikube-vm --zone=us-central1-a --command="
         kubectl apply -f dev/k8s.yaml
         "
