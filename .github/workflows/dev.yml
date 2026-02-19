@@ -39,7 +39,6 @@ jobs:
       run: |
         gcloud compute scp dev/k8s.yaml minikube-vm:~/k8s.yaml --zone=us-central1-a
         gcloud compute ssh minikube-vm --zone=us-central1-a --command "
-          export KUBECONFIG=\$HOME/.kube/config &&
-          kubectl apply -f k8s.yaml
+          minikube kubectl -- apply -f ~/k8s.yaml
         "
 
