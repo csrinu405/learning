@@ -37,10 +37,24 @@ jobs:
 
     - name: Deploy to Minikube VM
       run: |
+        # Copy YAML to VM
         gcloud compute scp dev/k8s.yaml minikube-vm:~/k8s.yaml --zone=us-central1-a
+
+        # SSH and deploy
         gcloud compute ssh minikube-vm --zone=us-central1-a --command "
+          # Ensure lock folder exists
           sudo mkdir -p /tmp/minikube-locks
           sudo chmod -R 777 /tmp/minikube-locks
-          minikube kubectl -- apply -f ~/k8s.yaml --insecure-skip-tls-verify
-        "
 
+          # Delete old cluster if it exists
+          sudo minikube delete
+
+          # Start new lightweight cluster
+          sudo minikube start --driver=docker --memory=2000 --cpus=2 --kubernetes-version=v1.24.0 --wait=all
+
+          # Export KUBECONFIG explicitly
+          export KUBECONFIG=/root/.kube/config
+
+          # Apply Kubernetes manifests
+          sudo minikube kubectl -- apply -f ~/k8s.yaml --insecure-skip-tls-verify
+        "
