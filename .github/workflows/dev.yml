@@ -50,7 +50,7 @@ jobs:
           sudo minikube delete
 
           # Start new lightweight cluster
-          sudo minikube start --driver=docker --memory=2000 --cpus=2 --kubernetes-version=v1.24.0 --wait=all
+          sudo minikube start --driver=docker --memory=2000 --cpus=2 --wait=all
 
           # Export KUBECONFIG explicitly
           export KUBECONFIG=/root/.kube/config
